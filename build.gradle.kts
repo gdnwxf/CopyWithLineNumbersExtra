@@ -1,11 +1,13 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.24"
-    id("org.jetbrains.intellij.platform") version "2.9.0"
+    id("org.jetbrains.kotlin.jvm") version "2.1.20"
+    id("org.jetbrains.intellij.platform") version "2.10.4"
 }
 
 group = "sandipchitale"
-version = "1.0.12"
+version = "1.0.13"
 
 repositories {
     mavenCentral()
@@ -17,10 +19,20 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        if (project.hasProperty("runIde_ideDir")) {
-            local("${project.extra["runIde_ideDir"]}")
-        } else {
-            intellijIdeaCommunity("253.17525.95")
+        intellijIdeaUltimate("LATEST-EAP-SNAPSHOT") {
+            useInstaller = false
+            useCache = true
+        }
+        testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
+    }
+}
+
+intellijPlatform {
+    buildSearchableOptions = false
+
+    pluginVerification {
+        ides {
+            recommended()
         }
     }
 }
@@ -32,12 +44,12 @@ tasks {
         targetCompatibility = "21"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
     }
 
     patchPluginXml {
         sinceBuild.set("253")
-        untilBuild.set("253.*")
+        untilBuild.set("261.*")
     }
 
     signPlugin {
