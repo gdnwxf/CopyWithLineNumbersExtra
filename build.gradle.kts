@@ -6,8 +6,8 @@ plugins {
     id("org.jetbrains.intellij.platform") version "2.10.4"
 }
 
-group = "sandipchitale"
-version = "1.0.13"
+group = "gdnwxf"
+version = "1.0.18"
 
 repositories {
     mavenCentral()

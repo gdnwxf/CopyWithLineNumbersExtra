@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "copywithlinenumbers"
+rootProject.name = "Copy Extra By QingHao"

@@ -1,4 +1,4 @@
-package sandipchitale;
+package gdnwxf;
 
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
@@ -18,6 +18,7 @@ public abstract class AbstractCopyWithLineNumbersAction extends AnAction {
         DataContext dataContext = e.getDataContext();
         Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
         if (editor != null) {
+            // 调用复制辅助类，统一处理行号拼装和剪贴板写入逻辑。
             CopyWithLineNumbersHelper.copyWithLineNumbers(
                     CommonDataKeys.PROJECT.getData(dataContext),
                     editor,
