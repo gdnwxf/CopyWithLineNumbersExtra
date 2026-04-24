@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(./gradlew buildPlugin)"
+      "Bash(./gradlew buildPlugin)",
+      "Bash(JAVA_HOME=\"C:\\\\Program Files\\\\JetBrains\\\\GoLand 2025.3.3\\\\jbr\" ./gradlew buildPlugin)"
     ]
   }
 }
