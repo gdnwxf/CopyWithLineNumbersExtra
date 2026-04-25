@@ -11,7 +11,10 @@
       "Bash(unzip -q \"d:\\\\abc\\\\CopyWithLineNumbersExtra\\\\build\\\\distributions\\\\Copy Extra By QingHao-1.0.18.zip\")",
       "Bash(unzip -l \"Copy Extra By QingHao/lib/Copy Extra By QingHao-1.0.18.jar\")",
       "Bash(unzip -q \"Copy Extra By QingHao/lib/Copy Extra By QingHao-1.0.18.jar\" gdnwxf/ProjectViewCopyWithFullPathAction.class)",
-      "Bash(\"C:\\\\Program Files\\\\JetBrains\\\\GoLand 2025.3.3\\\\jbr\\\\bin\\\\javap.exe\" -c gdnwxf/ProjectViewCopyWithFullPathAction.class)"
+      "Bash(\"C:\\\\Program Files\\\\JetBrains\\\\GoLand 2025.3.3\\\\jbr\\\\bin\\\\javap.exe\" -c gdnwxf/ProjectViewCopyWithFullPathAction.class)",
+      "Bash(rm -rf \"Copy Extra By QingHao\")",
+      "Bash(unzip -q \"d:\\\\abc\\\\CopyWithLineNumbersExtra\\\\build\\\\distributions\\\\Copy Extra By QingHao-1.0.19.zip\")",
+      "Bash(unzip -q \"Copy Extra By QingHao/lib/Copy Extra By QingHao-1.0.19.jar\")"
     ]
   }
 }
