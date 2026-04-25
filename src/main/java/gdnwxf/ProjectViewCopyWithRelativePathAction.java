@@ -26,8 +26,8 @@ public class ProjectViewCopyWithRelativePathAction extends AnAction {
             if (i > 0) {
                 sb.append("\n");
             }
-            // 文件显示 File: 前缀，文件夹显示 Folder: 前缀，再追加相对路径。
-            sb.append(files[i].isDirectory() ? "Folder: " : "File: ");
+            // 文件显示 File: 前缀，文件夹显示 Directory: 前缀，再追加相对路径。
+            sb.append(files[i].isDirectory() ? "Directory: " : "File: ");
             sb.append(CopyWithLineNumbersHelper.resolveRelativeFilePath(project, files[i].getPath()));
         }
 

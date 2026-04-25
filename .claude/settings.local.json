@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(./gradlew buildPlugin)",
-      "Bash(JAVA_HOME=\"C:\\\\Program Files\\\\JetBrains\\\\GoLand 2025.3.3\\\\jbr\" ./gradlew buildPlugin)"
+      "Bash(JAVA_HOME=\"C:\\\\Program Files\\\\JetBrains\\\\GoLand 2025.3.3\\\\jbr\" ./gradlew buildPlugin)",
+      "Bash(JAVA_HOME=\"C:\\\\Program Files\\\\JetBrains\\\\GoLand 2025.3.3\\\\jbr\" ./gradlew clean buildPlugin)",
+      "Bash(unzip -p agents-a0b18e4330-1.0.18.zip \"agents-a0b18e4330/lib/agents-a0b18e4330-1.0.18.jar\")",
+      "Bash(jar xf *)",
+      "Bash(javap -c gdnwxf/ProjectViewCopyWithFullPathAction.class)",
+      "Read(//d/tmp/**)",
+      "Bash(unzip -q \"d:\\\\abc\\\\CopyWithLineNumbersExtra\\\\build\\\\distributions\\\\Copy Extra By QingHao-1.0.18.zip\")",
+      "Bash(unzip -l \"Copy Extra By QingHao/lib/Copy Extra By QingHao-1.0.18.jar\")",
+      "Bash(unzip -q \"Copy Extra By QingHao/lib/Copy Extra By QingHao-1.0.18.jar\" gdnwxf/ProjectViewCopyWithFullPathAction.class)",
+      "Bash(\"C:\\\\Program Files\\\\JetBrains\\\\GoLand 2025.3.3\\\\jbr\\\\bin\\\\javap.exe\" -c gdnwxf/ProjectViewCopyWithFullPathAction.class)"
     ]
   }
 }
