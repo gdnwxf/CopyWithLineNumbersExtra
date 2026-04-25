@@ -46,6 +46,11 @@
                     class="gdnwxf.CopyWithRelativeFilePathAndLineRangeOnlyAction"
                     text="Copy Relative Path Line Range Only"
                     description="Copy only relative file path and selected line range"/>
+            <action id="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
+                    class="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
+                    text="Copy Full Path and Line Range Only"
+                    description="Copy only full file path and selected line range"/>
+            <separator/>
             <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
                     text="Copy Relative Path Line Range Selected"
@@ -54,19 +59,6 @@
                     class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
                     text="Copy Relative Path Line Numbers Selected"
                     description="Copy relative file path and line range with selected code and line numbers"/>
-            <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeAction"
-                    class="gdnwxf.CopyWithRelativeFilePathAndLineRangeAction"
-                    text="Copy Relative Path Line Range"
-                    description="Copy relative file path and selected line range with original content"/>
-            <action id="gdnwxf.CopyWithLineNumbersWithRelativeFilePathAction"
-                    class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathAction"
-                    text="Copy Relative Path Line Numbers"
-                    description="Copy relative file path with line numbers"/>
-            <separator/>
-            <action id="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
-                    class="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
-                    text="Copy Full Path and Line Range Only"
-                    description="Copy only full file path and selected line range"/>
             <action id="gdnwxf.CopyWithFullFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithFullFilePathAndLineRangeSelectedAction"
                     text="Copy Full Path Line Range Selected"
@@ -75,6 +67,15 @@
                     class="gdnwxf.CopyWithLineNumbersWithFullFilePathAndLineRangeSelectedAction"
                     text="Copy Full Path Line Numbers Selected"
                     description="Copy full file path and line range with selected code and line numbers"/>
+            <separator/>
+            <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeAction"
+                    class="gdnwxf.CopyWithRelativeFilePathAndLineRangeAction"
+                    text="Copy Relative Path Line Range"
+                    description="Copy relative file path and selected line range with original content"/>
+            <action id="gdnwxf.CopyWithLineNumbersWithRelativeFilePathAction"
+                    class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathAction"
+                    text="Copy Relative Path Line Numbers"
+                    description="Copy relative file path with line numbers"/>
             <action id="gdnwxf.CopyWithLineNumbersWithFileNameAndLineRangeAction"
                     class="gdnwxf.CopyWithLineNumbersWithFileNameAndLineRangeAction"
                     text="Copy Full Path Line Range"
