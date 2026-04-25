@@ -22,8 +22,15 @@ class CopyWithLineNumbersHelper {
         COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_ONLY,
         COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE,
         COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_ONLY,
+        COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_SELECTED,
         COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH,
         COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH,
+        COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH_SELECTED,
+        COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_SELECTED,
+        COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED,
+        COPY_WITH_FULL_FILE_PATH_SELECTED_ONLY,
+        COPY_WITH_RELATIVE_FILE_PATH_SELECTED_ONLY,
+        COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED,
     }
 
     /**
@@ -49,7 +56,6 @@ class CopyWithLineNumbersHelper {
         String[] lines = text.split("\n");
 
         StringBuilder sb = new StringBuilder();
-        String name = virtualFile.getName();
         String path = virtualFile.getPath();
         // 统一计算相对路径，避免多个复制模式重复拼装相同逻辑。
         String relativePath = resolveRelativeFilePath(project, path);
@@ -90,6 +96,15 @@ class CopyWithLineNumbersHelper {
                         .append(endLine + 1)
                         .append("\n");
                 break;
+            case COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_SELECTED:
+                sb.append("File: ")
+                        .append(relativePath)
+                        .append(":")
+                        .append(startLine + 1)
+                        .append("-")
+                        .append(endLine + 1)
+                        .append("\n");
+                break;
             case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH:
                 sb.append("File: ")
                         .append(path)
@@ -108,6 +123,46 @@ class CopyWithLineNumbersHelper {
                         .append(endLine + 1)
                         .append("\n");
                 break;
+            case COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH_SELECTED:
+                sb.append("File: ")
+                        .append(relativePath)
+                        .append(":")
+                        .append(startLine + 1)
+                        .append("-")
+                        .append(endLine + 1)
+                        .append("\n");
+                break;
+            case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_SELECTED:
+                sb.append("File: ")
+                        .append(path)
+                        .append(":")
+                        .append(startLine + 1)
+                        .append("-")
+                        .append(endLine + 1)
+                        .append("\n");
+                break;
+            case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED:
+                sb.append("File: ")
+                        .append(path)
+                        .append(":")
+                        .append(startLine + 1)
+                        .append("-")
+                        .append(endLine + 1)
+                        .append("\n");
+                break;
+            case COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED:
+                sb.append("File: ")
+                        .append(path)
+                        .append(":")
+                        .append(startLine + 1)
+                        .append("-")
+                        .append(endLine + 1)
+                        .append("\n");
+                break;
+            case COPY_WITH_FULL_FILE_PATH_SELECTED_ONLY:
+                break;
+            case COPY_WITH_RELATIVE_FILE_PATH_SELECTED_ONLY:
+                break;
         }
         if (copyWithLineNumbers == CopyType.COPY_WITH_LINE_NUMBERS_WITH_FILE_NAME_AND_LINE_RANGE
                 || copyWithLineNumbers == CopyType.COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE) {
@@ -117,11 +172,47 @@ class CopyWithLineNumbersHelper {
             clipBoard.setContents(new StringSelection(sb.toString()), EmptyClipboardOwner.INSTANCE);
             return;
         }
+        if (copyWithLineNumbers == CopyType.COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_SELECTED
+                || copyWithLineNumbers == CopyType.COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED) {
+            // 该模式输出文件头和行号范围，并复制选中的原始代码。
+            String selectedText = selectionModel.getSelectedText();
+            if (selectedText != null) {
+                sb.append(selectedText);
+            }
+            final Clipboard clipBoard = editor.getComponent().getToolkit().getSystemClipboard();
+            clipBoard.setContents(new StringSelection(sb.toString()), EmptyClipboardOwner.INSTANCE);
+            return;
+        }
         if (copyWithLineNumbers == CopyType.COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_ONLY
                 || copyWithLineNumbers == CopyType.COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_ONLY) {
             // 该模式只输出文件头，不追加正文内容。
             final Clipboard clipBoard = editor.getComponent().getToolkit().getSystemClipboard();
             clipBoard.setContents(new StringSelection(sb.toString()), EmptyClipboardOwner.INSTANCE);
+            return;
+        }
+        if (copyWithLineNumbers == CopyType.COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_SELECTED
+                || copyWithLineNumbers == CopyType.COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH_SELECTED
+                || copyWithLineNumbers == CopyType.COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED) {
+            // 该模式只复制选中部分，并为每行添加行号。
+            String selectedText = selectionModel.getSelectedText();
+            if (selectedText != null && !selectedText.isEmpty()) {
+                String[] selectedLines = selectedText.split("\n", -1);
+                for (int i = 0; i < selectedLines.length; i++) {
+                    sb.append(String.format("%5d: %s\n", startLine + i + 1, selectedLines[i]));
+                }
+            }
+            final Clipboard clipBoard = editor.getComponent().getToolkit().getSystemClipboard();
+            clipBoard.setContents(new StringSelection(sb.toString()), EmptyClipboardOwner.INSTANCE);
+            return;
+        }
+        if (copyWithLineNumbers == CopyType.COPY_WITH_FULL_FILE_PATH_SELECTED_ONLY
+                || copyWithLineNumbers == CopyType.COPY_WITH_RELATIVE_FILE_PATH_SELECTED_ONLY) {
+            // 该模式只复制选中部分，不加任何前缀和行号。
+            String selectedText = selectionModel.getSelectedText();
+            if (selectedText != null) {
+                final Clipboard clipBoard = editor.getComponent().getToolkit().getSystemClipboard();
+                clipBoard.setContents(new StringSelection(selectedText), EmptyClipboardOwner.INSTANCE);
+            }
             return;
         }
         for (int i = 0; i < lines.length; i++) {
