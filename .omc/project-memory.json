@@ -1,0 +1,76 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1777175138831,
+  "projectRoot": "/Users/wch/opensource/CopyWithLineNumbersExtra",
+  "techStack": {
+    "languages": [
+      {
+        "name": "Kotlin",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "build.gradle.kts"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "gradle",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "src"
+    ],
+    "gitBranches": {
+      "defaultBranch": "master",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "gradle": {
+      "path": "gradle",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1777175138825,
+      "keyFiles": []
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 0,
+      "lastAccessed": 1777175138826,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "gradle.properties",
+      "accessCount": 2,
+      "lastAccessed": 1777175499108,
+      "type": "file"
+    },
+    {
+      "path": "src/main/resources/META-INF/plugin.xml",
+      "accessCount": 1,
+      "lastAccessed": 1777175191696,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

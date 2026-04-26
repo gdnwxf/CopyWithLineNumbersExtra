@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        intellijIdeaUltimate("LATEST-EAP-SNAPSHOT") {
+        intellijIdeaUltimate("2024.2") {
             useInstaller = false
             useCache = true
         }
@@ -48,7 +48,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("253")
+        sinceBuild.set("242")
         untilBuild.set("261.*")
     }
 
