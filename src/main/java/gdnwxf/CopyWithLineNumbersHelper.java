@@ -67,7 +67,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_ONLY:
                 sb.append("File: ")
@@ -76,7 +76,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE:
                 sb.append("File: ")
@@ -85,7 +85,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_ONLY:
                 sb.append("File: ")
@@ -94,7 +94,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_SELECTED:
                 sb.append("File: ")
@@ -103,7 +103,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH:
                 sb.append("File: ")
@@ -112,7 +112,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH:
                 sb.append("File: ")
@@ -121,7 +121,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH_SELECTED:
                 sb.append("File: ")
@@ -130,7 +130,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_SELECTED:
                 sb.append("File: ")
@@ -139,7 +139,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED:
                 sb.append("File: ")
@@ -148,7 +148,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED:
                 sb.append("File: ")
@@ -157,7 +157,7 @@ class CopyWithLineNumbersHelper {
                         .append(startLine + 1)
                         .append("-")
                         .append(endLine + 1)
-                        .append("\n");
+                        .append(" 行\n");
                 break;
             case COPY_WITH_FULL_FILE_PATH_SELECTED_ONLY:
                 break;
