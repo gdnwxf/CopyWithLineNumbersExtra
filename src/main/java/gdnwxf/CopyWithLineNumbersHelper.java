@@ -61,103 +61,37 @@ class CopyWithLineNumbersHelper {
         String relativePath = resolveRelativeFilePath(project, path);
         switch (copyWithLineNumbers) {
             case COPY_WITH_LINE_NUMBERS_WITH_FILE_NAME_AND_LINE_RANGE:
-                sb.append("File: ")
-                        .append(path)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, path, startLine, endLine);
                 break;
             case COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_ONLY:
-                sb.append("File: ")
-                        .append(path)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, path, startLine, endLine);
                 break;
             case COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE:
-                sb.append("File: ")
-                        .append(relativePath)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, relativePath, startLine, endLine);
                 break;
             case COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_ONLY:
-                sb.append("File: ")
-                        .append(relativePath)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, relativePath, startLine, endLine);
                 break;
             case COPY_WITH_RELATIVE_FILE_PATH_AND_LINE_RANGE_SELECTED:
-                sb.append("File: ")
-                        .append(relativePath)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, relativePath, startLine, endLine);
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH:
-                sb.append("File: ")
-                        .append(path)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, path, startLine, endLine);
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH:
-                sb.append("File: ")
-                        .append(relativePath)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, relativePath, startLine, endLine);
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH_SELECTED:
-                sb.append("File: ")
-                        .append(relativePath)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, relativePath, startLine, endLine);
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_SELECTED:
-                sb.append("File: ")
-                        .append(path)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, path, startLine, endLine);
                 break;
             case COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED:
-                sb.append("File: ")
-                        .append(path)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, path, startLine, endLine);
                 break;
             case COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED:
-                sb.append("File: ")
-                        .append(path)
-                        .append(":")
-                        .append(startLine + 1)
-                        .append("-")
-                        .append(endLine + 1)
-                        .append(" 行\n");
+                appendFileHeader(sb, path, startLine, endLine);
                 break;
             case COPY_WITH_FULL_FILE_PATH_SELECTED_ONLY:
                 break;
@@ -221,6 +155,21 @@ class CopyWithLineNumbersHelper {
 
         final Clipboard clipBoard = editor.getComponent().getToolkit().getSystemClipboard();
         clipBoard.setContents(new StringSelection(sb.toString()), EmptyClipboardOwner.INSTANCE);
+    }
+
+    /**
+     * @param sb 输出缓冲区
+     * @param filePath 文件路径（相对或绝对）
+     * @param startLine 起始行（0 基）
+     * @param endLine 结束行（0 基）
+     * @description 拼装统一的文件头格式，单行时输出 "File: path:N 行"，多行时输出 "File: path:N-M 行"。
+     */
+    private static void appendFileHeader(StringBuilder sb, String filePath, int startLine, int endLine) {
+        sb.append("File: ").append(filePath).append(":").append(startLine + 1);
+        if (startLine != endLine) {
+            sb.append("-").append(endLine + 1);
+        }
+        sb.append(" 行\n");
     }
 
     /**
