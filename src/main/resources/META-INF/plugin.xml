@@ -54,10 +54,7 @@
             <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
                     text="Copy Relative Path Line Range Selected"
-                    description="Copy relative file path and line range with selected code only">
-                <keyboard-shortcut keymap="$default" first-keystroke="control shift C"/>
-                <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift C"/>
-            </action>
+                    description="Copy relative file path and line range with selected code only"/>
             <action id="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
                     class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
                     text="Copy Relative Path Line Numbers Selected"
@@ -65,7 +62,10 @@
             <action id="gdnwxf.CopyWithFullFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithFullFilePathAndLineRangeSelectedAction"
                     text="Copy Full Path Line Range Selected"
-                    description="Copy full file path and line range with selected code only"/>
+                    description="Copy full file path and line range with selected code only">
+                <keyboard-shortcut keymap="$default" first-keystroke="control shift C"/>
+                <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift C"/>
+            </action>
             <action id="gdnwxf.CopyWithLineNumbersWithFullFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithLineNumbersWithFullFilePathAndLineRangeSelectedAction"
                     text="Copy Full Path Line Numbers Selected"
@@ -100,7 +100,10 @@
             <action id="gdnwxf.ProjectViewCopyWithFullPathAction"
                     class="gdnwxf.ProjectViewCopyWithFullPathAction"
                     text="Copy With Full Path"
-                    description="Copy full path(s) of selected file(s), one per line"/>
+                    description="Copy full path(s) of selected file(s), one per line">
+                <keyboard-shortcut keymap="$default" first-keystroke="control shift C"/>
+                <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift C"/>
+            </action>
         </group>
     </actions>
 </idea-plugin>
