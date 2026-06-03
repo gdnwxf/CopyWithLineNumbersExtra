@@ -54,7 +54,10 @@
             <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
                     text="Copy Relative Path Line Range Selected"
-                    description="Copy relative file path and line range with selected code only"/>
+                    description="Copy relative file path and line range with selected code only">
+                <keyboard-shortcut keymap="$default" first-keystroke="control shift C"/>
+                <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift C"/>
+            </action>
             <action id="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
                     class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
                     text="Copy Relative Path Line Numbers Selected"
