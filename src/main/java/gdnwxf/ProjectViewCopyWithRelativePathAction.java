@@ -26,8 +26,8 @@ public class ProjectViewCopyWithRelativePathAction extends AnAction {
             if (i > 0) {
                 sb.append("\n");
             }
-            // 文件显示 File: 前缀，文件夹显示 Directory: 前缀，再追加相对路径。
-            sb.append(files[i].isDirectory() ? "Directory: " : "File: ");
+            // 文件显示 File: 前缀，文件夹显示 Path: 前缀，再追加相对路径。
+            sb.append(files[i].isDirectory() ? "Path: " : "File: ");
             sb.append(CopyWithLineNumbersHelper.resolveRelativeFilePath(project, files[i].getPath()));
         }
 
@@ -37,9 +37,10 @@ public class ProjectViewCopyWithRelativePathAction extends AnAction {
 
     @Override
     public void update(@NotNull AnActionEvent e) {
-        // Project View 中右键文件夹时 VIRTUAL_FILE/VIRTUAL_FILE_ARRAY 均可能为 null，
-        // 只要项目已加载就启用，actionPerformed 内会二次兜底。
-        e.getPresentation().setEnabled(e.getProject() != null);
+        // 仅在 Project View 存在有效选中项、且当前不在编辑器上下文时启用，避免与编辑器快捷键冲突。
+        boolean hasProjectViewSelection = resolveFiles(e) != null;
+        boolean isEditorContext = e.getData(CommonDataKeys.EDITOR) != null;
+        e.getPresentation().setEnabledAndVisible(hasProjectViewSelection && !isEditorContext);
     }
 
     /**
