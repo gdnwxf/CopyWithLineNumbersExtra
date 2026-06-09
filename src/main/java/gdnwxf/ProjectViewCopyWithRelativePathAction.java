@@ -27,11 +27,8 @@ public class ProjectViewCopyWithRelativePathAction extends AnAction {
 
     @Override
     public void update(@NotNull AnActionEvent e) {
-        // Project View 弹窗内按选中项启用；非弹窗场景仍避开编辑器上下文，避免与编辑器快捷键冲突。
-        boolean hasProjectViewSelection = CopyWithLineNumbersHelper.resolveProjectViewFiles(e) != null;
-        boolean isProjectViewPopup = ActionPlaces.PROJECT_VIEW_POPUP.equals(e.getPlace());
-        boolean isEditorContext = e.getData(CommonDataKeys.EDITOR) != null;
-        e.getPresentation().setEnabledAndVisible(hasProjectViewSelection && (isProjectViewPopup || !isEditorContext));
+        // 该 action 只注册到 Project View 弹窗；启用条件不依赖节点数据源，避免目录节点因数据 key 差异置灰。
+        e.getPresentation().setEnabledAndVisible(e.getProject() != null);
     }
 
     @Override
