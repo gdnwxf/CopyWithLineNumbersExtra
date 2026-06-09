@@ -1,12 +1,18 @@
 package gdnwxf;
 
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFileSystemItem;
 import com.intellij.util.ui.EmptyClipboardOwner;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.datatransfer.Clipboard;
@@ -14,6 +20,8 @@ import java.awt.datatransfer.StringSelection;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 class CopyWithLineNumbersHelper {
@@ -268,5 +276,80 @@ class CopyWithLineNumbersHelper {
         } catch (InvalidPathException exception) {
             return path;
         }
+    }
+
+    /**
+     * @param project 当前项目，计算相对路径时使用
+     * @param files Project View 选中的文件或文件夹
+     * @param useRelativePath 是否输出相对路径
+     * @returns 按类型合并后的 Project View 复制文本
+     * @description 多选时文件统一输出为 "File: a,b"，文件夹统一输出为 "Path: dir1,dir2"；混选时分两行输出。
+     */
+    static String buildProjectViewPathText(@Nullable Project project, VirtualFile[] files, boolean useRelativePath) {
+        StringBuilder filePaths = new StringBuilder();
+        StringBuilder directoryPaths = new StringBuilder();
+
+        for (VirtualFile file : files) {
+            String path = useRelativePath ? resolveRelativeFilePath(project, file.getPath()) : file.getPath();
+            StringBuilder target = file.isDirectory() ? directoryPaths : filePaths;
+            if (target.length() > 0) {
+                target.append(",");
+            }
+            target.append(path);
+        }
+
+        StringBuilder result = new StringBuilder();
+        if (filePaths.length() > 0) {
+            result.append("File: ").append(filePaths);
+        }
+        if (directoryPaths.length() > 0) {
+            if (result.length() > 0) {
+                result.append("\n");
+            }
+            result.append("Path: ").append(directoryPaths);
+        }
+        return result.toString();
+    }
+
+    /**
+     * @param e 当前 action 事件
+     * @returns Project View 选中的文件或目录；无法解析时返回 null
+     * @description Project View 的目录节点不总是暴露 VIRTUAL_FILE，需兼容 PSI 文件系统节点以避免目录右键菜单置灰。
+     */
+    @Nullable
+    static VirtualFile[] resolveProjectViewFiles(@NotNull AnActionEvent e) {
+        VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
+        if (files != null && files.length > 0) {
+            return files;
+        }
+
+        VirtualFile file = e.getData(CommonDataKeys.VIRTUAL_FILE);
+        if (file != null) {
+            return new VirtualFile[]{file};
+        }
+
+        PsiElement[] psiElements = e.getData(LangDataKeys.PSI_ELEMENT_ARRAY);
+        if (psiElements != null && psiElements.length > 0) {
+            List<VirtualFile> virtualFiles = new ArrayList<>();
+            for (PsiElement psiElement : psiElements) {
+                VirtualFile virtualFile = resolveVirtualFile(psiElement);
+                if (virtualFile != null) {
+                    virtualFiles.add(virtualFile);
+                }
+            }
+            if (!virtualFiles.isEmpty()) {
+                return virtualFiles.toArray(new VirtualFile[0]);
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private static VirtualFile resolveVirtualFile(@Nullable PsiElement psiElement) {
+        if (psiElement instanceof PsiFileSystemItem fileSystemItem) {
+            return fileSystemItem.getVirtualFile();
+        }
+        return null;
     }
 }
