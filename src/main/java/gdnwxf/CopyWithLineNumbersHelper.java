@@ -64,9 +64,10 @@ class CopyWithLineNumbersHelper {
         String[] lines = text.split("\n");
 
         StringBuilder sb = new StringBuilder();
-        String path = virtualFile.getPath();
+        String rawPath = virtualFile.getPath();
+        String path = formatFullPath(rawPath);
         // 统一计算相对路径，避免多个复制模式重复拼装相同逻辑。
-        String relativePath = resolveRelativeFilePath(project, path);
+        String relativePath = resolveRelativeFilePath(project, rawPath);
         switch (copyWithLineNumbers) {
             case COPY_WITH_LINE_NUMBERS_WITH_FILE_NAME_AND_LINE_RANGE:
                 appendFileHeader(sb, path, startLine, endLine);
@@ -278,6 +279,63 @@ class CopyWithLineNumbersHelper {
         }
     }
 
+    static String formatFullPath(String path) {
+        CopyPathSettingsState.WindowsCopyPathStyle pathStyle = CopyPathSettingsState.getInstance().getWindowsCopyPathStyle();
+        if (pathStyle == CopyPathSettingsState.WindowsCopyPathStyle.DEFAULT) {
+            return formatDefaultPath(path);
+        }
+
+        WindowsDrivePath drivePath = WindowsDrivePath.parse(path);
+        if (drivePath == null) {
+            return path.replace('\\', '/');
+        }
+
+        return switch (pathStyle) {
+            case DEFAULT -> formatDefaultPath(path);
+            case WSL -> "/mnt/" + drivePath.lowercaseDriveLetter() + drivePath.restPath();
+            case UNIX -> drivePath.uppercaseDriveLetter() + ":" + drivePath.restPath();
+            case CYGWIN -> "/cygdrive/" + drivePath.lowercaseDriveLetter() + drivePath.restPath();
+            case MSYS, GIT_BASH -> "/" + drivePath.lowercaseDriveLetter() + drivePath.restPath();
+        };
+    }
+
+    private static String formatDefaultPath(String path) {
+        if (com.intellij.openapi.util.SystemInfo.isWindows) {
+            return path.replace('/', '\\');
+        }
+        return path;
+    }
+
+    private record WindowsDrivePath(char driveLetter, String restPath) {
+        @Nullable
+        static WindowsDrivePath parse(String path) {
+            if (path == null || path.length() < 2 || path.charAt(1) != ':') {
+                return null;
+            }
+
+            char driveLetter = path.charAt(0);
+            if (!((driveLetter >= 'A' && driveLetter <= 'Z') || (driveLetter >= 'a' && driveLetter <= 'z'))) {
+                return null;
+            }
+
+            String restPath = path.substring(2).replace('\\', '/');
+            if (restPath.isEmpty()) {
+                restPath = "/";
+            } else if (restPath.charAt(0) != '/') {
+                restPath = "/" + restPath;
+            }
+            return new WindowsDrivePath(driveLetter, restPath);
+        }
+
+        char lowercaseDriveLetter() {
+            return Character.toLowerCase(driveLetter);
+        }
+
+        char uppercaseDriveLetter() {
+            return Character.toUpperCase(driveLetter);
+        }
+    }
+
     /**
      * @param project 当前项目，计算相对路径时使用
      * @param files Project View 选中的文件或文件夹
@@ -290,7 +348,7 @@ class CopyWithLineNumbersHelper {
         StringBuilder directoryPaths = new StringBuilder();
 
         for (VirtualFile file : files) {
-            String path = useRelativePath ? resolveRelativeFilePath(project, file.getPath()) : file.getPath();
+            String path = useRelativePath ? resolveRelativeFilePath(project, file.getPath()) : formatFullPath(file.getPath());
             StringBuilder target = file.isDirectory() ? directoryPaths : filePaths;
             if (target.length() > 0) {
                 target.append(",");

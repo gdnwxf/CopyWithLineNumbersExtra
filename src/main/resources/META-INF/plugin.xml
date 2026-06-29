@@ -34,7 +34,12 @@
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
-    <extensions defaultExtensionNs="com.intellij"/>
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable parentId="tools"
+                                 instance="gdnwxf.CopyPathSettingsConfigurable"
+                                 id="gdnwxf.copy.extra.settings"
+                                 displayName="Copy Extra"/>
+    </extensions>
 
     <actions>
         <group id="gdnwxf.CopyExtraGroup"
