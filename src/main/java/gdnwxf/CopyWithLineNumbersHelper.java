@@ -256,12 +256,12 @@ class CopyWithLineNumbersHelper {
      */
     static String resolveRelativeFilePath(@Nullable Project project, String path) {
         if (project == null) {
-            return path;
+            return formatFullPath(path);
         }
 
         String projectBasePath = project.getBasePath();
         if (projectBasePath == null) {
-            return path;
+            return formatFullPath(path);
         }
 
         try {
@@ -270,12 +270,12 @@ class CopyWithLineNumbersHelper {
             // 统一标准化当前文件路径，避免因为路径分隔符或冗余片段导致 startsWith 判断失真。
             Path normalizedFilePath = Paths.get(path).normalize();
             if (!normalizedFilePath.startsWith(normalizedProjectBasePath)) {
-                return path;
+                return formatFullPath(path);
             }
             // 生成项目内文件的相对路径，用于相对路径复制模式输出更短的结果。
-            return normalizedProjectBasePath.relativize(normalizedFilePath).toString();
+            return formatRelativePath(normalizedProjectBasePath.relativize(normalizedFilePath).toString());
         } catch (InvalidPathException exception) {
-            return path;
+            return formatFullPath(path);
         }
     }
 
@@ -304,6 +304,14 @@ class CopyWithLineNumbersHelper {
             return path.replace('/', '\\');
         }
         return path;
+    }
+
+    private static String formatRelativePath(String path) {
+        CopyPathSettingsState.WindowsCopyPathStyle pathStyle = CopyPathSettingsState.getInstance().getWindowsCopyPathStyle();
+        if (pathStyle == CopyPathSettingsState.WindowsCopyPathStyle.DEFAULT) {
+            return formatDefaultPath(path);
+        }
+        return path.replace('\\', '/');
     }
 
     private record WindowsDrivePath(char driveLetter, String restPath) {
