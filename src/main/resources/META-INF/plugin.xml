@@ -54,7 +54,10 @@
             <action id="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
                     class="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
                     text="Copy Full Path and Line Range Only"
-                    description="Copy only full file path and selected line range"/>
+                    description="Copy only full file path and selected line range">
+                <keyboard-shortcut keymap="$default" first-keystroke="control shift C"/>
+                <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift C"/>
+            </action>
             <separator/>
             <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
@@ -67,10 +70,7 @@
             <action id="gdnwxf.CopyWithFullFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithFullFilePathAndLineRangeSelectedAction"
                     text="Copy Full Path Line Range Selected"
-                    description="Copy full file path and line range with selected code only">
-                <keyboard-shortcut keymap="$default" first-keystroke="control shift C"/>
-                <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift C"/>
-            </action>
+                    description="Copy full file path and line range with selected code only"/>
             <action id="gdnwxf.CopyWithLineNumbersWithFullFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithLineNumbersWithFullFilePathAndLineRangeSelectedAction"
                     text="Copy Full Path Line Numbers Selected"
