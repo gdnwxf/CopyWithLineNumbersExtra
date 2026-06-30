@@ -11,6 +11,10 @@ import org.jetbrains.annotations.NotNull;
 @Service(Service.Level.APP)
 @State(name = "CopyExtraSettings", storages = @Storage("copyExtraSettings.xml"))
 public final class CopyPathSettingsState implements PersistentStateComponent<CopyPathSettingsState.StateData> {
+    static final String DEFAULT_FILE_PREFIX = "File:";
+    static final String DEFAULT_FILE_SUFFIX = "行";
+    static final String DEFAULT_PATH_PREFIX = "Path:";
+
     private StateData stateData = new StateData();
 
     public static CopyPathSettingsState getInstance() {
@@ -43,8 +47,35 @@ public final class CopyPathSettingsState implements PersistentStateComponent<Cop
                 : windowsCopyPathStyle;
     }
 
+    String getFilePrefix() {
+        return stateData.filePrefix == null ? DEFAULT_FILE_PREFIX : stateData.filePrefix;
+    }
+
+    void setFilePrefix(String filePrefix) {
+        stateData.filePrefix = filePrefix == null ? DEFAULT_FILE_PREFIX : filePrefix;
+    }
+
+    String getFileSuffix() {
+        return stateData.fileSuffix == null ? DEFAULT_FILE_SUFFIX : stateData.fileSuffix;
+    }
+
+    void setFileSuffix(String fileSuffix) {
+        stateData.fileSuffix = fileSuffix == null ? DEFAULT_FILE_SUFFIX : fileSuffix;
+    }
+
+    String getPathPrefix() {
+        return stateData.pathPrefix == null ? DEFAULT_PATH_PREFIX : stateData.pathPrefix;
+    }
+
+    void setPathPrefix(String pathPrefix) {
+        stateData.pathPrefix = pathPrefix == null ? DEFAULT_PATH_PREFIX : pathPrefix;
+    }
+
     public static final class StateData {
         public WindowsCopyPathStyle windowsCopyPathStyle = WindowsCopyPathStyle.DEFAULT;
+        public String filePrefix = DEFAULT_FILE_PREFIX;
+        public String fileSuffix = DEFAULT_FILE_SUFFIX;
+        public String pathPrefix = DEFAULT_PATH_PREFIX;
     }
 
     public enum WindowsCopyPathStyle {

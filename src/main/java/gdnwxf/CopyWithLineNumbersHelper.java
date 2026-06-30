@@ -171,14 +171,37 @@ class CopyWithLineNumbersHelper {
      * @param filePath 文件路径（相对或绝对）
      * @param startLine 起始行（0 基）
      * @param endLine 结束行（0 基）
-     * @description 拼装统一的文件头格式，单行时输出 "File: path:N 行"，多行时输出 "File: path:N-M 行"。
+     * @description 拼装统一的文件头格式，默认单行输出 "File: path:N 行"，多行输出 "File: path:N-M 行"；可在设置中清空前缀或后缀。
      */
     private static void appendFileHeader(StringBuilder sb, String filePath, int startLine, int endLine) {
-        sb.append("File: ").append(filePath).append(":").append(startLine + 1);
+        CopyPathSettingsState settings = CopyPathSettingsState.getInstance();
+        appendPrefix(sb, settings.getFilePrefix());
+        sb.append(filePath).append(":").append(startLine + 1);
         if (startLine != endLine) {
             sb.append("-").append(endLine + 1);
         }
-        sb.append(" 行\n");
+        appendSuffix(sb, settings.getFileSuffix());
+        sb.append("\n");
+    }
+
+    private static void appendPrefix(StringBuilder sb, @Nullable String prefix) {
+        if (prefix == null || prefix.isEmpty()) {
+            return;
+        }
+        sb.append(prefix);
+        if (!Character.isWhitespace(prefix.charAt(prefix.length() - 1))) {
+            sb.append(" ");
+        }
+    }
+
+    private static void appendSuffix(StringBuilder sb, @Nullable String suffix) {
+        if (suffix == null || suffix.isEmpty()) {
+            return;
+        }
+        if (!Character.isWhitespace(suffix.charAt(0))) {
+            sb.append(" ");
+        }
+        sb.append(suffix);
     }
 
     /**
@@ -349,7 +372,7 @@ class CopyWithLineNumbersHelper {
      * @param files Project View 选中的文件或文件夹
      * @param useRelativePath 是否输出相对路径
      * @returns 按类型合并后的 Project View 复制文本
-     * @description 多选时文件统一输出为 "File: a,b"，文件夹统一输出为 "Path: dir1,dir2"；混选时分两行输出。
+     * @description 默认多选时文件统一输出为 "File: a,b"，文件夹统一输出为 "Path: dir1,dir2"；混选时分两行输出；可在设置中清空前缀。
      */
     static String buildProjectViewPathText(@Nullable Project project, VirtualFile[] files, boolean useRelativePath) {
         StringBuilder filePaths = new StringBuilder();
@@ -364,15 +387,18 @@ class CopyWithLineNumbersHelper {
             target.append(path);
         }
 
+        CopyPathSettingsState settings = CopyPathSettingsState.getInstance();
         StringBuilder result = new StringBuilder();
         if (filePaths.length() > 0) {
-            result.append("File: ").append(filePaths);
+            appendPrefix(result, settings.getFilePrefix());
+            result.append(filePaths);
         }
         if (directoryPaths.length() > 0) {
             if (result.length() > 0) {
                 result.append("\n");
             }
-            result.append("Path: ").append(directoryPaths);
+            appendPrefix(result, settings.getPathPrefix());
+            result.append(directoryPaths);
         }
         return result.toString();
     }
