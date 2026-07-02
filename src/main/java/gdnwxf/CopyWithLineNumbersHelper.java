@@ -36,6 +36,7 @@ class CopyWithLineNumbersHelper {
         COPY_WITH_LINE_NUMBERS_WITH_RELATIVE_FILE_PATH_SELECTED,
         COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_SELECTED,
         COPY_WITH_LINE_NUMBERS_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED,
+        COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SCOPE_SELECTED,
         COPY_WITH_FULL_FILE_PATH_SELECTED_ONLY,
         COPY_WITH_RELATIVE_FILE_PATH_SELECTED_ONLY,
         COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SELECTED,
@@ -68,6 +69,10 @@ class CopyWithLineNumbersHelper {
         String path = formatFullPath(rawPath);
         // 统一计算相对路径，避免多个复制模式重复拼装相同逻辑。
         String relativePath = resolveRelativeFilePath(project, rawPath);
+        if (copyWithLineNumbers == CopyType.COPY_WITH_FULL_FILE_PATH_AND_LINE_RANGE_SCOPE_SELECTED) {
+            copyFullPathLineRangeScopeSelected(editor, document, path, startLine, endLine, selectionModel.getSelectedText());
+            return;
+        }
         switch (copyWithLineNumbers) {
             case COPY_WITH_LINE_NUMBERS_WITH_FILE_NAME_AND_LINE_RANGE:
                 appendFileHeader(sb, path, startLine, endLine);
@@ -160,6 +165,30 @@ class CopyWithLineNumbersHelper {
         }
         for (int i = 0; i < lines.length; i++) {
             sb.append(String.format("%5d: %s\n", startLine + i + 1, lines[i]));
+        }
+
+        final Clipboard clipBoard = editor.getComponent().getToolkit().getSystemClipboard();
+        clipBoard.setContents(new StringSelection(sb.toString()), EmptyClipboardOwner.INSTANCE);
+    }
+
+    /**
+     * @param editor 当前编辑器，用于写入系统剪贴板
+     * @param document 当前文档，用于读取扩展范围内的完整行
+     * @param path 当前文件完整路径
+     * @param selectedStartLine 选区起始行（0 基）
+     * @param selectedEndLine 选区结束行（0 基）
+     * @param selectedText 当前选中的文本内容
+     * @description 文件头按设置将选区向前、向后扩展指定行数，正文仍只复制选中的原始代码。
+     */
+    private static void copyFullPathLineRangeScopeSelected(Editor editor, Document document, String path, int selectedStartLine, int selectedEndLine, @Nullable String selectedText) {
+        CopyPathSettingsState settings = CopyPathSettingsState.getInstance();
+        int scopeStartLine = Math.max(0, selectedStartLine - settings.getScopeSelectedBeforeLineCount());
+        int scopeEndLine = Math.min(document.getLineCount() - 1, selectedEndLine + settings.getScopeSelectedAfterLineCount());
+
+        StringBuilder sb = new StringBuilder();
+        appendFileHeader(sb, path, scopeStartLine, scopeEndLine);
+        if (selectedText != null) {
+            sb.append(selectedText);
         }
 
         final Clipboard clipBoard = editor.getComponent().getToolkit().getSystemClipboard();

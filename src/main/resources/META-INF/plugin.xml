@@ -18,10 +18,11 @@
     <ul>
     <li>Copy With Line Numbers: With Full Path</li>
     <li>Copy With Line Numbers: With Relative Path</li>
-    <li>Copy Full File Path and Line Range</li>
-    <li>Copy Full File Path and Line Range Only</li>
-    <li>Copy Relative File Path and Line Range</li>
-    <li>Copy Relative File Path and Line Range Only</li>
+	    <li>Copy Full File Path and Line Range</li>
+	    <li>Copy Full File Path and Line Range Only</li>
+	    <li>Copy Full Path Line Range Scope Selected</li>
+	    <li>Copy Relative File Path and Line Range</li>
+	    <li>Copy Relative File Path and Line Range Only</li>
     </ul>
     <p>Updated icon.</p>
 ]]></description>
@@ -47,26 +48,23 @@
                description="Extra copy actions"
                popup="true">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <action id="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
+                    class="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
+                    text="Copy Full Path and Line Range Only"
+                    description="Copy only full file path and selected line range"/>
             <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeOnlyAction"
                     class="gdnwxf.CopyWithRelativeFilePathAndLineRangeOnlyAction"
                     text="Copy Relative Path Line Range Only"
                     description="Copy only relative file path and selected line range"/>
-            <action id="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
-                    class="gdnwxf.CopyWithFullFilePathAndLineRangeOnlyAction"
-                    text="Copy Full Path and Line Range Only"
-                    description="Copy only full file path and selected line range">
+            <separator/>
+            <action id="gdnwxf.CopyWithFullFilePathAndLineRangeScopeSelectedAction"
+                    class="gdnwxf.CopyWithFullFilePathAndLineRangeScopeSelectedAction"
+                    text="Copy Full Path Line Range Scope Selected"
+                    description="Copy full file path and expanded line range with selected code only">
                 <keyboard-shortcut keymap="$default" first-keystroke="control shift C"/>
                 <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift C"/>
             </action>
             <separator/>
-            <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
-                    class="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
-                    text="Copy Relative Path Line Range Selected"
-                    description="Copy relative file path and line range with selected code only"/>
-            <action id="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
-                    class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
-                    text="Copy Relative Path Line Numbers Selected"
-                    description="Copy relative file path and line range with selected code and line numbers"/>
             <action id="gdnwxf.CopyWithFullFilePathAndLineRangeSelectedAction"
                     class="gdnwxf.CopyWithFullFilePathAndLineRangeSelectedAction"
                     text="Copy Full Path Line Range Selected"
@@ -75,15 +73,15 @@
                     class="gdnwxf.CopyWithLineNumbersWithFullFilePathAndLineRangeSelectedAction"
                     text="Copy Full Path Line Numbers Selected"
                     description="Copy full file path and line range with selected code and line numbers"/>
+            <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
+                    class="gdnwxf.CopyWithRelativeFilePathAndLineRangeSelectedAction"
+                    text="Copy Relative Path Line Range Selected"
+                    description="Copy relative file path and line range with selected code only"/>
+            <action id="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
+                    class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathSelectedAction"
+                    text="Copy Relative Path Line Numbers Selected"
+                    description="Copy relative file path and line range with selected code and line numbers"/>
             <separator/>
-            <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeAction"
-                    class="gdnwxf.CopyWithRelativeFilePathAndLineRangeAction"
-                    text="Copy Relative Path Line Range"
-                    description="Copy relative file path and selected line range with original content"/>
-            <action id="gdnwxf.CopyWithLineNumbersWithRelativeFilePathAction"
-                    class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathAction"
-                    text="Copy Relative Path Line Numbers"
-                    description="Copy relative file path with line numbers"/>
             <action id="gdnwxf.CopyWithLineNumbersWithFileNameAndLineRangeAction"
                     class="gdnwxf.CopyWithLineNumbersWithFileNameAndLineRangeAction"
                     text="Copy Full Path Line Range"
@@ -92,6 +90,14 @@
                     class="gdnwxf.CopyWithLineNumbersWithFullFilePathAction"
                     text="Copy Full Path Line Numbers"
                     description="Copy full file path with line numbers"/>
+            <action id="gdnwxf.CopyWithRelativeFilePathAndLineRangeAction"
+                    class="gdnwxf.CopyWithRelativeFilePathAndLineRangeAction"
+                    text="Copy Relative Path Line Range"
+                    description="Copy relative file path and selected line range with original content"/>
+            <action id="gdnwxf.CopyWithLineNumbersWithRelativeFilePathAction"
+                    class="gdnwxf.CopyWithLineNumbersWithRelativeFilePathAction"
+                    text="Copy Relative Path Line Numbers"
+                    description="Copy relative file path with line numbers"/>
         </group>
         <group id="gdnwxf.ProjectViewCopyExtraGroup"
                text="Copy Extra"

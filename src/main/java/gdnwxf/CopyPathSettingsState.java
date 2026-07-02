@@ -14,6 +14,8 @@ public final class CopyPathSettingsState implements PersistentStateComponent<Cop
     static final String DEFAULT_FILE_PREFIX = "File:";
     static final String DEFAULT_FILE_SUFFIX = "行";
     static final String DEFAULT_PATH_PREFIX = "Path:";
+    static final int DEFAULT_SCOPE_SELECTED_BEFORE_LINE_COUNT = 5;
+    static final int DEFAULT_SCOPE_SELECTED_AFTER_LINE_COUNT = 5;
 
     private StateData stateData = new StateData();
 
@@ -71,11 +73,29 @@ public final class CopyPathSettingsState implements PersistentStateComponent<Cop
         stateData.pathPrefix = pathPrefix == null ? DEFAULT_PATH_PREFIX : pathPrefix;
     }
 
+    int getScopeSelectedBeforeLineCount() {
+        return Math.max(0, stateData.scopeSelectedBeforeLineCount);
+    }
+
+    void setScopeSelectedBeforeLineCount(int scopeSelectedBeforeLineCount) {
+        stateData.scopeSelectedBeforeLineCount = Math.max(0, scopeSelectedBeforeLineCount);
+    }
+
+    int getScopeSelectedAfterLineCount() {
+        return Math.max(0, stateData.scopeSelectedAfterLineCount);
+    }
+
+    void setScopeSelectedAfterLineCount(int scopeSelectedAfterLineCount) {
+        stateData.scopeSelectedAfterLineCount = Math.max(0, scopeSelectedAfterLineCount);
+    }
+
     public static final class StateData {
         public WindowsCopyPathStyle windowsCopyPathStyle = WindowsCopyPathStyle.DEFAULT;
         public String filePrefix = DEFAULT_FILE_PREFIX;
         public String fileSuffix = DEFAULT_FILE_SUFFIX;
         public String pathPrefix = DEFAULT_PATH_PREFIX;
+        public int scopeSelectedBeforeLineCount = DEFAULT_SCOPE_SELECTED_BEFORE_LINE_COUNT;
+        public int scopeSelectedAfterLineCount = DEFAULT_SCOPE_SELECTED_AFTER_LINE_COUNT;
     }
 
     public enum WindowsCopyPathStyle {

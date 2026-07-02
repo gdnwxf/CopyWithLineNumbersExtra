@@ -9,11 +9,14 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.ParseException;
 import java.util.Objects;
 
 public final class CopyPathSettingsConfigurable implements Configurable {
@@ -22,6 +25,8 @@ public final class CopyPathSettingsConfigurable implements Configurable {
     private JTextField filePrefixTextField;
     private JTextField fileSuffixTextField;
     private JTextField pathPrefixTextField;
+    private JSpinner scopeSelectedBeforeLineCountSpinner;
+    private JSpinner scopeSelectedAfterLineCountSpinner;
 
     @Override
     public @Nls String getDisplayName() {
@@ -35,28 +40,11 @@ public final class CopyPathSettingsConfigurable implements Configurable {
         JPanel formPanel = new JPanel(new GridBagLayout());
         int row = 0;
 
-        filePrefixTextField = new JTextField(24);
-        addRow(formPanel, row++, "File prefix:", filePrefixTextField);
-
-        fileSuffixTextField = new JTextField(24);
-        addRow(formPanel, row++, "File suffix:", fileSuffixTextField);
-
-        pathPrefixTextField = new JTextField(24);
-        addRow(formPanel, row++, "Path prefix:", pathPrefixTextField);
-
-        GridBagConstraints noteConstraints = new GridBagConstraints();
-        noteConstraints.gridx = 0;
-        noteConstraints.gridy = row++;
-        noteConstraints.gridwidth = 2;
-        noteConstraints.anchor = GridBagConstraints.WEST;
-        noteConstraints.insets = new Insets(4, 0, 8, 0);
-        formPanel.add(new JLabel("Leave prefix/suffix empty to output no File:, Path:, or line suffix."), noteConstraints);
-
         GridBagConstraints pathFormatLabelConstraints = new GridBagConstraints();
         pathFormatLabelConstraints.gridx = 0;
         pathFormatLabelConstraints.gridy = row;
         pathFormatLabelConstraints.anchor = GridBagConstraints.WEST;
-        pathFormatLabelConstraints.insets = new Insets(0, 0, 0, 8);
+        pathFormatLabelConstraints.insets = new Insets(0, 0, 6, 8);
         formPanel.add(new JLabel(SystemInfo.isWindows ? "Windows copy path format:" : "Copy path format:"), pathFormatLabelConstraints);
 
         GridBagConstraints comboBoxConstraints = new GridBagConstraints();
@@ -64,22 +52,38 @@ public final class CopyPathSettingsConfigurable implements Configurable {
         comboBoxConstraints.gridy = row++;
         comboBoxConstraints.weightx = 1.0;
         comboBoxConstraints.fill = GridBagConstraints.HORIZONTAL;
+        comboBoxConstraints.insets = new Insets(0, 0, 6, 0);
         if (SystemInfo.isWindows) {
             windowsCopyPathStyleComboBox = new JComboBox<>(CopyPathSettingsState.WindowsCopyPathStyle.values());
             formPanel.add(windowsCopyPathStyleComboBox, comboBoxConstraints);
         } else {
             formPanel.add(new JLabel("Default"), comboBoxConstraints);
-        }
-
-        if (!SystemInfo.isWindows) {
             GridBagConstraints unixNoteConstraints = new GridBagConstraints();
             unixNoteConstraints.gridx = 0;
-            unixNoteConstraints.gridy = row;
+            unixNoteConstraints.gridy = row++;
             unixNoteConstraints.gridwidth = 2;
             unixNoteConstraints.anchor = GridBagConstraints.WEST;
-            unixNoteConstraints.insets = new Insets(8, 0, 0, 0);
+            unixNoteConstraints.insets = new Insets(0, 0, 6, 0);
             formPanel.add(new JLabel("Linux, macOS, and Unix use the default IDE path format."), unixNoteConstraints);
         }
+
+        pathPrefixTextField = new JTextField(24);
+        addRow(formPanel, row++, "Path prefix:", pathPrefixTextField);
+
+        filePrefixTextField = new JTextField(12);
+        fileSuffixTextField = new JTextField(12);
+        addTwoFieldRow(formPanel, row++, "File prefix:", filePrefixTextField, "File suffix:", fileSuffixTextField);
+
+        scopeSelectedBeforeLineCountSpinner = createLineCountSpinner();
+        scopeSelectedAfterLineCountSpinner = createLineCountSpinner();
+        addTwoFieldRow(
+                formPanel,
+                row++,
+                "Scope selected before lines:",
+                scopeSelectedBeforeLineCountSpinner,
+                "After lines:",
+                scopeSelectedAfterLineCountSpinner
+        );
 
         panel.add(formPanel, BorderLayout.NORTH);
         reset();
@@ -103,6 +107,59 @@ public final class CopyPathSettingsConfigurable implements Configurable {
         formPanel.add(component, fieldConstraints);
     }
 
+    private static void addTwoFieldRow(JPanel formPanel, int row, String firstLabel, JComponent firstComponent, String secondLabel, JComponent secondComponent) {
+        GridBagConstraints labelConstraints = new GridBagConstraints();
+        labelConstraints.gridx = 0;
+        labelConstraints.gridy = row;
+        labelConstraints.anchor = GridBagConstraints.WEST;
+        labelConstraints.insets = new Insets(0, 0, 6, 8);
+        formPanel.add(new JLabel(firstLabel), labelConstraints);
+
+        JPanel fieldPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints firstFieldConstraints = new GridBagConstraints();
+        firstFieldConstraints.gridx = 0;
+        firstFieldConstraints.gridy = 0;
+        firstFieldConstraints.weightx = 1.0;
+        firstFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+        firstFieldConstraints.insets = new Insets(0, 0, 0, 8);
+        fieldPanel.add(firstComponent, firstFieldConstraints);
+
+        GridBagConstraints secondLabelConstraints = new GridBagConstraints();
+        secondLabelConstraints.gridx = 1;
+        secondLabelConstraints.gridy = 0;
+        secondLabelConstraints.anchor = GridBagConstraints.WEST;
+        secondLabelConstraints.insets = new Insets(0, 0, 0, 8);
+        fieldPanel.add(new JLabel(secondLabel), secondLabelConstraints);
+
+        GridBagConstraints secondFieldConstraints = new GridBagConstraints();
+        secondFieldConstraints.gridx = 2;
+        secondFieldConstraints.gridy = 0;
+        secondFieldConstraints.weightx = 1.0;
+        secondFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+        fieldPanel.add(secondComponent, secondFieldConstraints);
+
+        GridBagConstraints fieldConstraints = new GridBagConstraints();
+        fieldConstraints.gridx = 1;
+        fieldConstraints.gridy = row;
+        fieldConstraints.weightx = 1.0;
+        fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+        fieldConstraints.insets = new Insets(0, 0, 6, 0);
+        formPanel.add(fieldPanel, fieldConstraints);
+    }
+
+    private static JSpinner createLineCountSpinner() {
+        return new JSpinner(new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1));
+    }
+
+    private static int getSpinnerIntValue(JSpinner spinner) {
+        try {
+            spinner.commitEdit();
+        } catch (ParseException ignored) {
+            // 保留当前有效值。
+        }
+        return ((Number) spinner.getValue()).intValue();
+    }
+
     @Override
     public boolean isModified() {
         CopyPathSettingsState settings = CopyPathSettingsState.getInstance();
@@ -118,6 +175,12 @@ public final class CopyPathSettingsConfigurable implements Configurable {
         }
         if (pathPrefixTextField != null) {
             modified = modified || !Objects.equals(pathPrefixTextField.getText(), settings.getPathPrefix());
+        }
+        if (scopeSelectedBeforeLineCountSpinner != null) {
+            modified = modified || getSpinnerIntValue(scopeSelectedBeforeLineCountSpinner) != settings.getScopeSelectedBeforeLineCount();
+        }
+        if (scopeSelectedAfterLineCountSpinner != null) {
+            modified = modified || getSpinnerIntValue(scopeSelectedAfterLineCountSpinner) != settings.getScopeSelectedAfterLineCount();
         }
         return modified;
     }
@@ -139,6 +202,12 @@ public final class CopyPathSettingsConfigurable implements Configurable {
         if (pathPrefixTextField != null) {
             settings.setPathPrefix(pathPrefixTextField.getText());
         }
+        if (scopeSelectedBeforeLineCountSpinner != null) {
+            settings.setScopeSelectedBeforeLineCount(getSpinnerIntValue(scopeSelectedBeforeLineCountSpinner));
+        }
+        if (scopeSelectedAfterLineCountSpinner != null) {
+            settings.setScopeSelectedAfterLineCount(getSpinnerIntValue(scopeSelectedAfterLineCountSpinner));
+        }
     }
 
     @Override
@@ -156,6 +225,12 @@ public final class CopyPathSettingsConfigurable implements Configurable {
         if (pathPrefixTextField != null) {
             pathPrefixTextField.setText(settings.getPathPrefix());
         }
+        if (scopeSelectedBeforeLineCountSpinner != null) {
+            scopeSelectedBeforeLineCountSpinner.setValue(settings.getScopeSelectedBeforeLineCount());
+        }
+        if (scopeSelectedAfterLineCountSpinner != null) {
+            scopeSelectedAfterLineCountSpinner.setValue(settings.getScopeSelectedAfterLineCount());
+        }
     }
 
     @Override
@@ -165,5 +240,7 @@ public final class CopyPathSettingsConfigurable implements Configurable {
         filePrefixTextField = null;
         fileSuffixTextField = null;
         pathPrefixTextField = null;
+        scopeSelectedBeforeLineCountSpinner = null;
+        scopeSelectedAfterLineCountSpinner = null;
     }
 }

@@ -6,16 +6,16 @@ JetBrains / IntelliJ IDEA plugin for copying editor selections with file path, l
 
 Editor popup menu under `Copy Extra`:
 
-- `Copy Relative Path Line Range Only`
 - `Copy Full Path and Line Range Only`
-- `Copy Relative Path Line Range Selected`
-- `Copy Relative Path Line Numbers Selected`
+- `Copy Relative Path Line Range Only`
 - `Copy Full Path Line Range Selected`
 - `Copy Full Path Line Numbers Selected`
-- `Copy Relative Path Line Range`
-- `Copy Relative Path Line Numbers`
+- `Copy Relative Path Line Range Selected`
+- `Copy Relative Path Line Numbers Selected`
 - `Copy Full Path Line Range`
 - `Copy Full Path Line Numbers`
+- `Copy Relative Path Line Range`
+- `Copy Relative Path Line Numbers`
 
 Project view popup menu under `Copy Extra`:
 
