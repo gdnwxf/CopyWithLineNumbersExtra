@@ -8,6 +8,7 @@ Editor popup menu under `Copy Extra`:
 
 - `Copy Full Path and Line Range Only`
 - `Copy Relative Path Line Range Only`
+- `Copy Full Path Line Range Scope Selected`
 - `Copy Full Path Line Range Selected`
 - `Copy Full Path Line Numbers Selected`
 - `Copy Relative Path Line Range Selected`
@@ -27,7 +28,22 @@ Project view popup menu under `Copy Extra`:
 - Windows/Linux: `Ctrl+Shift+C`
 - macOS: `Cmd+Shift+C`
 
-In the editor this triggers `Copy Full Path Line Range Selected`.
+In the editor this triggers `Copy Full Path Line Range Scope Selected`.
+
+`Copy Full Path Line Range Scope Selected` copies the selected code text only, while the header line range expands around the selection. The before/after line counts are configurable in `Settings | Tools | Copy Extra` and default to 5 lines before and 5 lines after the selection.
+
+## Settings
+
+Open `Settings | Tools | Copy Extra`:
+
+- `Windows copy path format`: Windows-only full path output format.
+- `Path prefix`: Prefix used for copied folders in Project View. Default: `Path:`.
+- `File prefix`: Prefix used before copied file paths. Default: `File:`.
+- `File suffix`: Suffix used after editor line ranges. Default: `行`.
+- `Scope selected before lines`: Number of lines before the selection included in the `Copy Full Path Line Range Scope Selected` header. Default: `5`.
+- `After lines`: Number of lines after the selection included in the `Copy Full Path Line Range Scope Selected` header. Default: `5`.
+
+On Linux, macOS, and Unix, path format uses the default IDE path format.
 
 ## Build
 
